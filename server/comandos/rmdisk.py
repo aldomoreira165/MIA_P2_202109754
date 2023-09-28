@@ -6,6 +6,6 @@ from elementos.disco import *
 def execute_rmdisk(args):   
     confirmacion = (input("Esta seguro que desea eliminar el disco? (S/N): ")).lower()
     if confirmacion == "s":
-        eliminarDisco(args.path)
+        return eliminarDisco(args.path)
     else:
         print("Eliminacion de disco cancelada") 

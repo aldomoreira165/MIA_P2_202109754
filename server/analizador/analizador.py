@@ -46,7 +46,7 @@ def AnalyzeType(entry):
                 print(" ------ Termino mkdisk ------ ")
             elif(command == "rmdisk"):
                 print(" ------ Se detecto rmdisk ------ ")
-                fn_rmdisk(split_args)
+                return fn_rmdisk(split_args)
                 print(" ------ Termino rmdisk ------ ")
             elif(command == "fdisk"):
                 print(" ------ Se detecto fdisk ------ ")
@@ -80,6 +80,9 @@ def AnalyzeType(entry):
                 print(" ------ Se detecto rep ------ ")
                 fn_rep(split_args)
                 print(" ------ Termino rep ------ ")
+            else:
+                printError("Comando no reconocido")
+                return "[Error] Comando no reconocido"
     except Exception as e: pass
 
 def fn_logout():
@@ -144,7 +147,7 @@ def fn_rmdisk(split_args):
 
         args = parser.parse_args(split_args)
 
-        execute_rmdisk(args)
+        return execute_rmdisk(args)
 
     except SystemExit: printError("Análisis de argumentos")
     except Exception as e: printError(str(e))

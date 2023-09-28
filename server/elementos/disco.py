@@ -18,8 +18,10 @@ def eliminarDisco(nombre):
     if path.exists(nombre):
         remove(nombre)
         print("Disco eliminado correctamente")
+        return f"Disco eliminado correctamente. ({nombre})"
     else:
         print("Error: el archivo no se encuentra o no existe.")
+        return f"[Error] el archivo no se encuentra o no existe. ({nombre})"
 
 
 def establecerEspacioDisco(archivo, espacio, unidad):
