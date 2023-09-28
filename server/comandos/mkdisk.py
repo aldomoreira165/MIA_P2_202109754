@@ -29,7 +29,7 @@ def execute_mkdisk(args):
             mbrDEs = Mbr()
             obtenerDatosDisco(args.path, 0, mbrDEs)
             mbrDEs.display_info()
-            return "Disco creado exitosamente."
+            return f"Disco creado exitosamente. ({args.path}))"
         except Exception as e:
             print(f"Error configurando disco: {e}")
     else:

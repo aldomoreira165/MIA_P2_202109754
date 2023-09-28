@@ -1,0 +1,2 @@
+Mkdisk -size=50 -unit=M -path=/home/aldo/archivos/Disco1.dsk -fit=FF 
+Mkdisk -unit=k -size=51200 -path=/home/aldo/archivos/Disco2.dsk -fit=BF

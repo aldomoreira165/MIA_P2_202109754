@@ -16,7 +16,7 @@ Mkdisk -unit=k -size=51200 -path=/home/aldo/archivos/Disco2.dsk -fit=BF
 # 10M                
 mkDisk -size=10 -path=/home/aldo/archivos/Disco3.dsk   
 # 50M                               
-mkdisk -size=51200 -path="/home/aldo/archivos/mis archivos/Disco4.dsk" -unit=K  
+Mkdisk -unit=k -size=51200 -path=/home/aldo/archivos/Disco2.dsk -fit=BF 
 # 20M       
 mkDisk -size=20 -path="/home/aldo/archivos/mis archivos/Disco5.dsk" -unit=M -fit=WF  
 # 50M X  

@@ -14,33 +14,35 @@ from comandos.rep import execute_rep
 
 
 def Commands():
-   printConsole(" ---- Bienvenido al Sistema de Archivos de  - 202109754 ---- ")
-   while True:
-      command = input('\033[36m<<System>> - Ingrese un comando -\n\033[00m').lower()
-      command = re.sub(r"[#][^\n]*", "", command)
-      if command == "": continue
-      elif re.search("[e|E][x|X][i|I][t|T]", command): break
-      AnalyzeType(command)
-   printConsole("... Saliendo del programa ...")
+    salida = ""
+    printConsole(" ---- Bienvenido al Sistema de Archivos de  - 202109754 ---- ")
+    while True:
+        command = input('\033[36m<<System>> - Ingrese un comando -\n\033[00m').lower()
+        command = re.sub(r"[#][^\n]*", "", command)
+        if command == "": continue
+        elif re.search("[e|E][x|X][i|I][t|T]", command): break
+        salida += AnalyzeType(command) + "\n"
+        AnalyzeType(command)
+    printConsole("... Saliendo del programa ...")
+    return salida
    
 
 def AnalyzeType(entry):
-    respuesta  = ""
     try:
         #verificar si tiene la forma de un comentario 
         if re.search(r"^[#][^\n]*", entry) or re.search(r"^[#][^\n]*$", entry):
             printConsole(entry)
         else: 
-            printConsole("Analizando comando: " + entry)
-            split_args = shlex.split(entry)
+            printConsole("Analizando comando: " + entry.lower())
+            split_args = shlex.split(entry.lower())
             command = split_args.pop(0)
             if (command == "execute"):
                 print(" ------ Se detecto execute ------ ")
-                fn_execute(split_args)
+                return fn_execute(split_args)
                 print(" ------ Termino execute ------ ")
             elif(command == "mkdisk"):
                 print(" ------ Se detecto mkdisk ------ ")
-                respuesta = fn_mkdisk(split_args)
+                return fn_mkdisk(split_args)
                 print(" ------ Termino mkdisk ------ ")
             elif(command == "rmdisk"):
                 print(" ------ Se detecto rmdisk ------ ")
@@ -78,7 +80,6 @@ def AnalyzeType(entry):
                 print(" ------ Se detecto rep ------ ")
                 fn_rep(split_args)
                 print(" ------ Termino rep ------ ")
-            return respuesta
     except Exception as e: pass
 
 def fn_logout():
@@ -107,11 +108,15 @@ def fn_execute(split_args):
         parser.add_argument("-path", required=True, help="Ruta del archivo a ejecutar")
         args = parser.parse_args(split_args)
 
+        salida = ""
+
         if os.path.exists(args.path):
             with open(args.path, 'r') as file:
                 for line in file:
                     line = line.lower()
-                    AnalyzeType(line)
+                    salida += AnalyzeType(line) + "\n"
+                salida += "Execute finalizado."
+                return salida
         else:
             print(f"El archivo {args.path} no existe.")
 
