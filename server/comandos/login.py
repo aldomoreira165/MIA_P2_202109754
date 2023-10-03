@@ -11,6 +11,7 @@ def execute_login(args):
 
     if len(userSesion) != 0:
         print("Ya existe una sesion iniciada")
+        return "Ya existe una sesion iniciada"
     else:
         mPartition = None
         for partition in particiones_montadas:
@@ -20,6 +21,7 @@ def execute_login(args):
 
         if mPartition == None:
             print("No se encontro la particion")
+            return "No se encontro la particion"
         else:
             TempSuperblock = Superblock()
             Crrfile = open(mPartition[2], "rb+")

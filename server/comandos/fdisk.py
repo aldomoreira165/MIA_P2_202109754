@@ -4,75 +4,43 @@ from elementos.inodo import *
 from elementos.fileblock import *
 from elementos.mbr import Mbr
 from elementos.disco import *
-from funciones.utilities import coding_str, decode_str
 from elementos.ebr import Ebr
 
 def execute_fdisk(args):
-    if args.delete:
-            nombre_particion = "b'" + args.name + "'"
+    if args.size > 0:
+        if os.path.exists(args.path):
+            mbrDisco = Mbr()
+            #obteniendo datos del mbr
+            obtenerDatosDisco(args.path, 0, mbrDisco)
 
-            #buscar la particion y eliminarla
-            if os.path.exists(args.path):
-                mbrDisco = Mbr()
-
-                #obteniendo datos del mbr
-                obtenerDatosDisco(args.path, 0, mbrDisco)
-
-                if str(mbrDisco.particion1.get_name()) == nombre_particion:
-                    #preguntar si se desea eliminar la particion
-                    confirmacion = (input("Esta seguro que desea eliminar la particion? (S/N): ")).lower()
-                    if confirmacion == "s":
-                        mbrDisco.particion1.eliminar()
-
-                        with open(args.path, "rb+") as discoAbierto:
-                            desocuparEspacio(discoAbierto, mbrDisco.particion1.start, mbrDisco.particion1.s)
-
-                        actualizarParticionesMBR(args.path, mbrDisco)
-                        actualizar_start_particiones(args.path)
-                        print("particion eliminada exitosamente")
+            #verificar si hay espacio en el disco
+            bytesSize = convertir_bytes(args.size, args.unit) 
+            espacio_ocupado = verificar_espacio_ocupado(args.path)
+            if espacio_ocupado + bytesSize <= mbrDisco.tamano:
+                if args.type != "l":
+                    if mbrDisco.particion1.s == 0:
+                        return settearDatosParticion(mbrDisco, args.path, 1, args.name, args.fit, args.type, args.unit, args.size)
+                    elif mbrDisco.particion2.s == 0:
+                        return settearDatosParticion(mbrDisco, args.path, 2, args.name, args.fit, args.type, args.unit, args.size)
+                    elif mbrDisco.particion3.s == 0:
+                        return settearDatosParticion(mbrDisco, args.path, 3, args.name, args.fit, args.type, args.unit, args.size)
+                    elif mbrDisco.particion4.s == 0:
+                        return settearDatosParticion(mbrDisco, args.path, 4, args.name, args.fit, args.type, args.unit, args.size)
                     else:
-                        print("Eliminacion de particion cancelada")
-                elif str(mbrDisco.particion2.get_name()) == nombre_particion: 
-                    confirmacion = (input("Esta seguro que desea eliminar la particion? (S/N): ")).lower()
-                    if confirmacion == "s":
-                        mbrDisco.particion2.eliminar()
-
-                        with open(args.path, "rb+") as discoAbierto:
-                            desocuparEspacio(discoAbierto, mbrDisco.particion2.start, mbrDisco.particion2.s)
-
-                        actualizarParticionesMBR(args.path, mbrDisco)
-                        actualizar_start_particiones(args.path)
-                        print("particion eliminada exitosamente")
-                    else:
-                        print("Eliminacion de particion cancelada")
-                elif str(mbrDisco.particion3.get_name()) == nombre_particion:
-                    confirmacion = (input("Esta seguro que desea eliminar la particion? (S/N): ")).lower()
-                    if confirmacion == "s":
-                        mbrDisco.particion3.eliminar()
-
-                        with open(args.path, "rb+") as discoAbierto:
-                            desocuparEspacio(discoAbierto, mbrDisco.particion3.start, mbrDisco.particion3.s)
-
-                        actualizarParticionesMBR(args.path, mbrDisco)
-                        actualizar_start_particiones(args.path)
-                        print("particion eliminada exitosamente")
-                    else:
-                        print("Eliminacion de particion cancelada")
-                elif str(mbrDisco.particion4.get_name()) == nombre_particion:
-                    confirmacion = (input("Esta seguro que desea eliminar la particion? (S/N): ")).lower()
-                    if confirmacion == "s":
-                        mbrDisco.particion4.eliminar()
-
-                        with open(args.path, "rb+") as discoAbierto:
-                            desocuparEspacio(discoAbierto, mbrDisco.particion4.start, mbrDisco.particion4.s)
-
-                        actualizarParticionesMBR(args.path, mbrDisco)
-                        actualizar_start_particiones(args.path)
-                        print("particion eliminada exitosamente")
-                    else:
-                        print("Eliminacion de particion cancelada")
+                        print("Ya no existen particiones libres")
+                        return "Ya no existen particiones libres"
                 else:
-                    print("Error: particion no encontrada")
+                    if mbrDisco.particion1.type == b'e':
+                        return settearDatosParticion(mbrDisco, args.path, 1, args.name, args.fit, args.type, args.unit, args.size)
+                    elif mbrDisco.particion2.type == b'e':
+                        return settearDatosParticion(mbrDisco, args.path, 2, args.name, args.fit, args.type, args.unit, args.size)
+                    elif mbrDisco.particion3.type == b'e':
+                        return settearDatosParticion(mbrDisco, args.path, 3, args.name, args.fit, args.type, args.unit, args.size)
+                    elif mbrDisco.particion4.type == b'e':
+                        return settearDatosParticion(mbrDisco, args.path, 4, args.name, args.fit, args.type, args.unit, args.size)
+                    else:
+                        print("No existe una particion extendida")
+                        return "No existe una particion extendida"
 
                 mbrActualizado = Mbr()
                 obtenerDatosDisco(args.path, 0, mbrActualizado)
@@ -85,128 +53,16 @@ def execute_fdisk(args):
                 print("*******************************************")
                 mbrActualizado.particion4.display_info()
                 print("*******************************************")
-
             else:
-                print("Error: El disco no existe.") 
-    elif args.add:
-        if args.unit:
-            if os.path.exists(args.path):
-                mbrDisco = Mbr()
-                obtenerDatosDisco(args.path, 0, mbrDisco)
-
-                bytes = 0
-                nombre_particion = "b'" + args.name + "'"
-
-                if args.unit == "b":
-                    bytes = args.add
-                elif args.unit == "k":
-                    bytes = args.add * 1024
-                elif args.unit == "m":
-                    bytes= args.add * 1024 * 1024
-
-                bytes_agregar = int(bytes)
-                
-                #verificar si no sobrepasa el tamaño del disco
-                espacio_ocupado = verificar_espacio_ocupado(args.path)
-                condicion = espacio_ocupado + bytes_agregar
-                if condicion <= mbrDisco.tamano and condicion > 0:
-                    #buscar la particion a la que se la va a modificar el size
-                    if str(mbrDisco.particion1.get_name()) == nombre_particion:
-                        mbrDisco.particion1.set_s(int(mbrDisco.particion1.s) + bytes_agregar)
-                        actualizarParticionesMBR(args.path, mbrDisco)
-                        actualizar_start_particiones(args.path)
-                        print("particion modificada exitosamente")
-                    elif str(mbrDisco.particion2.get_name()) == nombre_particion:
-                        mbrDisco.particion2.set_s(int(mbrDisco.particion2.s) + bytes_agregar)
-                        actualizarParticionesMBR(args.path, mbrDisco)
-                        actualizar_start_particiones(args.path)
-                        print("particion modificada exitosamente")
-                    elif str(mbrDisco.particion3.get_name()) == nombre_particion:
-                        mbrDisco.particion3.set_s(int(mbrDisco.particion3.s) + bytes_agregar)
-                        actualizarParticionesMBR(args.path, mbrDisco)
-                        actualizar_start_particiones(args.path)
-                        print("particion modificada exitosamente")
-                    elif str(mbrDisco.particion4.get_name()) == nombre_particion:
-                        mbrDisco.particion4.set_s(int(mbrDisco.particion4.s) + bytes_agregar)
-                        actualizarParticionesMBR(args.path, mbrDisco)
-                        actualizar_start_particiones(args.path)
-                        print("particion modificada exitosamente")
-                    else:
-                        print("Error: particion no encontrada")
-
-                    mbrActualizado = Mbr()
-                    obtenerDatosDisco(args.path, 0, mbrActualizado)
-                    print("=====================particiones========================")
-                    mbrActualizado.particion1.display_info()
-                    print("*******************************************")
-                    mbrActualizado.particion2.display_info()
-                    print("*******************************************")
-                    mbrActualizado.particion3.display_info()
-                    print("*******************************************")
-                    mbrActualizado.particion4.display_info()
-                    print("*******************************************")
-                else:
-                    print("Error: no hay espacio suficiente en el disco")
-            else:
-                print("Error: El disco no existe.")   
+                espacio_libre = mbrDisco.tamano - espacio_ocupado
+                print("Error: no hay espacio suficiente en el disco. Espacio libre: ", espacio_libre)
+                return "Error: no hay espacio suficiente en el disco. Espacio libre: " + str(espacio_libre)
         else:
-            print("Error: El parametro (-unit) es obligatorio")
+            print("Error: El disco no existe.")
+            return "Error: El disco no existe."
     else:
-        if args.size:
-            if args.size > 0:
-                if os.path.exists(args.path):
-                    mbrDisco = Mbr()
-                    #obteniendo datos del mbr
-                    obtenerDatosDisco(args.path, 0, mbrDisco)
-
-                    #verificar si hay espacio en el disco
-                    bytesSize = convertir_bytes(args.size, args.unit) 
-                    espacio_ocupado = verificar_espacio_ocupado(args.path)
-                    if espacio_ocupado + bytesSize <= mbrDisco.tamano:
-                        if args.type != "l":
-                            if mbrDisco.particion1.s == 0:
-                                settearDatosParticion(mbrDisco, args.path, 1, args.name, args.fit, args.type, args.unit, args.size)
-                            elif mbrDisco.particion2.s == 0:
-                                settearDatosParticion(mbrDisco, args.path, 2, args.name, args.fit, args.type, args.unit, args.size)
-                            elif mbrDisco.particion3.s == 0:
-                                settearDatosParticion(mbrDisco, args.path, 3, args.name, args.fit, args.type, args.unit, args.size)
-                            elif mbrDisco.particion4.s == 0:
-                                settearDatosParticion(mbrDisco, args.path, 4, args.name, args.fit, args.type, args.unit, args.size)
-                            else:
-                                print("Ya no existen particiones libres")
-                        else:
-                            if mbrDisco.particion1.type == b'e':
-                                settearDatosParticion(mbrDisco, args.path, 1, args.name, args.fit, args.type, args.unit, args.size)
-                            elif mbrDisco.particion2.type == b'e':
-                                settearDatosParticion(mbrDisco, args.path, 2, args.name, args.fit, args.type, args.unit, args.size)
-                            elif mbrDisco.particion3.type == b'e':
-                                settearDatosParticion(mbrDisco, args.path, 3, args.name, args.fit, args.type, args.unit, args.size)
-                            elif mbrDisco.particion4.type == b'e':
-                                settearDatosParticion(mbrDisco, args.path, 4, args.name, args.fit, args.type, args.unit, args.size)
-                            else:
-                                print("No existe una particion extendida")
-
-                        mbrActualizado = Mbr()
-                        obtenerDatosDisco(args.path, 0, mbrActualizado)
-                        print("=====================particiones========================")
-                        mbrActualizado.particion1.display_info()
-                        print("*******************************************")
-                        mbrActualizado.particion2.display_info()
-                        print("*******************************************")
-                        mbrActualizado.particion3.display_info()
-                        print("*******************************************")
-                        mbrActualizado.particion4.display_info()
-                        print("*******************************************")
-                    else:
-                        espacio_libre = mbrDisco.tamano - espacio_ocupado
-                        print("Error: no hay espacio suficiente en el disco. Espacio libre: ", espacio_libre)
-                else:
-                    print("Error: El disco no existe.")
-            else:
-                print("Error: El tamaño de la particion debe ser positivo y mayor que 0.")
-        else:
-            print("Error: El tamaño de la particion (-size) es obligatorio.")
-
+        print("Error: El tamaño de la particion debe ser positivo y mayor que 0.")
+        return "Error: El tamaño de la particion debe ser positivo y mayor que 0."
 
 def caseLogica(rutaDisco, fitParticion, sizeParticion, nombreParticion):
     puntero = -1
@@ -261,6 +117,10 @@ def caseLogica(rutaDisco, fitParticion, sizeParticion, nombreParticion):
             ebrUltimo.set_infomation('0', '0', startNext, -1, -1, "noName")
             generarDatosDisco(discoAbierto, part_next, ebrUltimo)
 
+    return "Particion creada correctamente"
+
+    
+
 #particiones extendidas
 def caseExtendida(mbr, rutaDisco, numParticion):
     extendida = False
@@ -285,7 +145,9 @@ def caseExtendida(mbr, rutaDisco, numParticion):
         extendida = True
     
     if extendida == True:
-        setPrimerEBR(rutaDisco, inicio, size)      
+        setPrimerEBR(rutaDisco, inicio, size) 
+        return "Particion extendida creada correctamente" 
+
 
 def setPrimerEBR(rutaDisco, inicio, size):
     ebr = Ebr()
@@ -307,6 +169,7 @@ def settearDatosParticion(mbr, path, numero_particion, name, fit, type, unit, si
     if numero_particion == 1:
         if nombre_comparar in nombres_particiones:
             print("Error: nombre de particion ya existe")
+            return "Error: nombre de particion ya existe"
         else:
             if set_tipo_particion(mbr, 1, type) == True:
                 inicio = len(mbr.doSerialize())
@@ -328,6 +191,7 @@ def settearDatosParticion(mbr, path, numero_particion, name, fit, type, unit, si
                     mbr.particion1.set_s(size_w)
                 else:
                     print("unidad de particion incorrecta")
+                    return "unidad de particion incorrecta"
 
                 if mbr.particion1.type != b'l':
                     actualizarParticionesMBR(path, mbr)
@@ -337,13 +201,19 @@ def settearDatosParticion(mbr, path, numero_particion, name, fit, type, unit, si
                         ocuparEspacio(discoAbierto, inicio, mbr.particion1.s)
 
                     if mbr.particion1.type == b'e':
-                        caseExtendida(mbr, path, 1)
+                        return caseExtendida(mbr, path, 1)
+
+                    return "Particion creada correctamente"
                 else:
-                    caseLogica(path, fit, bytesConv, name)
+                    return caseLogica(path, fit, bytesConv, name)
+            else:
+                print("[Error] No se pudo crear la particion")
+                return "[Error] No se pudo crear la particion"
 
     elif numero_particion == 2:
         if nombre_comparar in nombres_particiones:
             print("Error: nombre de particion ya existe")
+            return "Error: nombre de particion ya existe"
         else:
             if set_tipo_particion(mbr, 2, type) == True:
                 inicio = len(mbr.doSerialize()) + mbr.particion1.s
@@ -365,6 +235,7 @@ def settearDatosParticion(mbr, path, numero_particion, name, fit, type, unit, si
                     mbr.particion2.set_s(size_w)
                 else:
                     print("unidad de particion incorrecta")
+                    return "unidad de particion incorrecta"
                 if mbr.particion2.type != b'l':
                     actualizarParticionesMBR(path, mbr)
                     actualizar_start_particiones(path)
@@ -374,13 +245,19 @@ def settearDatosParticion(mbr, path, numero_particion, name, fit, type, unit, si
                             ocuparEspacio(discoAbierto, inicio, mbr.particion2.s)
 
                     if mbr.particion2.type == b'e':
-                        caseExtendida(mbr, path, 2)
+                        return caseExtendida(mbr, path, 2)
+
+                    return "Particion creada correctamente"
                 else:
-                    caseLogica(path, fit, bytesConv, name)
+                    return caseLogica(path, fit, bytesConv, name)
+            else:
+                print("[Error] No se pudo crear la particion")
+                return "[Error] No se pudo crear la particion"
                 
     elif numero_particion == 3:
         if nombre_comparar in nombres_particiones:
             print("Error: nombre de particion ya existe")
+            return "Error: nombre de particion ya existe"
         else:
             if set_tipo_particion(mbr, 3, type) == True:
                 inicio = len(mbr.doSerialize()) + mbr.particion1.s + mbr.particion2.s
@@ -402,6 +279,7 @@ def settearDatosParticion(mbr, path, numero_particion, name, fit, type, unit, si
                     mbr.particion3.set_s(size_w)
                 else:
                     print("unidad de particion incorrecta")
+                    return "unidad de particion incorrecta"
                 if mbr.particion3.type != b'l':
                     actualizarParticionesMBR(path, mbr)
                     actualizar_start_particiones(path)
@@ -411,13 +289,19 @@ def settearDatosParticion(mbr, path, numero_particion, name, fit, type, unit, si
                             ocuparEspacio(discoAbierto, inicio, mbr.particion3.s)
 
                     if mbr.particion3.type == b'e':
-                        caseExtendida(mbr, path, 3)
+                        return caseExtendida(mbr, path, 3)
+
+                    return "Particion creada correctamente"
                 else:
-                    caseLogica(path, fit, bytesConv, name)
+                    return caseLogica(path, fit, bytesConv, name)
+            else:
+                print("[Error] No se pudo crear la particion")
+                return "[Error] No se pudo crear la particion"
 
     elif numero_particion == 4:
         if nombre_comparar in nombres_particiones:
             print("Error: nombre de particion ya existe")
+            return "Error: nombre de particion ya existe"
         else:
             if set_tipo_particion(mbr, 4, type) == True:
                 inicio = len(mbr.doSerialize()) + mbr.particion1.s + mbr.particion2.s + mbr.particion3.s
@@ -439,6 +323,7 @@ def settearDatosParticion(mbr, path, numero_particion, name, fit, type, unit, si
                     mbr.particion4.set_s(size_w)
                 else:
                     print("unidad de particion incorrecta")
+                    return "unidad de particion incorrecta"
                 if mbr.particion4.type != b'l':
                     actualizarParticionesMBR(path, mbr)
                     actualizar_start_particiones(path)
@@ -449,9 +334,14 @@ def settearDatosParticion(mbr, path, numero_particion, name, fit, type, unit, si
                             ocuparEspacio(discoAbierto, inicio, mbr.particion4.s)
 
                     if mbr.particion4.type == b'e':
-                        caseExtendida(mbr, path, 4)
+                        return caseExtendida(mbr, path, 4)
+
+                    return "Particion creada correctamente"
                 else:
-                    caseLogica(path, fit, bytesConv, name)
+                    return caseLogica(path, fit, bytesConv, name)
+            else:
+                print("[Error] No se pudo crear la particion")
+                return "[Error] No se pudo crear la particion"
     
 #funcion para setter tipo de particion
 def set_tipo_particion(mbr, numero_particion, type):

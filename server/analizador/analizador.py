@@ -9,31 +9,14 @@ from comandos.mkfs import *
 from comandos.login import *
 from comandos.mount import *
 from comandos.rmdisk import *
-from comandos.unmount import *
 from comandos.rep import execute_rep
-
-
-def Commands():
-    salida = ""
-    printConsole(" ---- Bienvenido al Sistema de Archivos de  - 202109754 ---- ")
-    while True:
-        command = input('\033[36m<<System>> - Ingrese un comando -\n\033[00m').lower()
-        command = re.sub(r"[#][^\n]*", "", command)
-        if command == "": continue
-        elif re.search("[e|E][x|X][i|I][t|T]", command): break
-        salida += AnalyzeType(command) + "\n"
-        AnalyzeType(command)
-    printConsole("... Saliendo del programa ...")
-    return salida
    
-
-def AnalyzeType(entry):
+def AnalyzeType(entry): 
     try:
-        #verificar si tiene la forma de un comentario 
-        if re.search(r"^[#][^\n]*", entry) or re.search(r"^[#][^\n]*$", entry):
-            printConsole(entry)
-        else: 
-            printConsole("Analizando comando: " + entry.lower())
+        printConsole("Analizando comando: " + entry.lower())
+        if re.search(r"^\s*#.*$", entry) or re.search(r"^\s*$", entry):
+            return ""
+        else:
             split_args = shlex.split(entry.lower())
             command = split_args.pop(0)
             if (command == "execute"):
@@ -50,27 +33,23 @@ def AnalyzeType(entry):
                 print(" ------ Termino rmdisk ------ ")
             elif(command == "fdisk"):
                 print(" ------ Se detecto fdisk ------ ")
-                fn_fdisk(split_args)
+                return fn_fdisk(split_args)
                 print(" ------ Termino fdisk ------ ")
             elif(command == "mount"):
                 print(" ------ Se detecto mount ------ ")
-                fn_mount(split_args)
+                return fn_mount(split_args)
                 print(" ------ Termino mount ------ ")
-            elif(command == "unmount"):
-                print(" ------ Se detecto unmount ------ ")
-                fn_unmount(split_args)
-                print(" ------ Termino unmount ------ ")
             elif (command == "mkfs"):
                 print(" ------ Se detecto mkfs ------ ")
-                fn_mkfs(split_args)
+                return fn_mkfs(split_args)
                 print(" ------ Termino mkfs ------ ")
             elif (command == "login"):
                 print(" ------ Se detecto login ------ ")
-                fn_login(split_args)
+                return fn_login(split_args)
                 print(" ------ Termino login ------ ")
             elif (command == "logout"):
                 print(" ------ Se detecto logout ------ ")
-                fn_logout()
+                return fn_logout()
                 print(" ------ Termino logout ------ ")
             elif (command == "pause"):
                 print(" ------ Se detecto pause ------ ")
@@ -78,7 +57,7 @@ def AnalyzeType(entry):
                 print(" ------ Termino pause ------ ")
             elif (command == "rep"):
                 print(" ------ Se detecto rep ------ ")
-                fn_rep(split_args)
+                return fn_rep(split_args)
                 print(" ------ Termino rep ------ ")
             else:
                 printError("Comando no reconocido")
@@ -100,7 +79,7 @@ def fn_login(split_args):
         parser.add_argument("-id", required=True, help="Id de la particion montada")
         args = parser.parse_args(split_args)
 
-        execute_login(args)
+        return execute_login(args)
 
     except SystemExit: printError("Análisis de argumentos")
     except Exception as e: printError(str(e))
@@ -122,6 +101,7 @@ def fn_execute(split_args):
                 return salida
         else:
             print(f"El archivo {args.path} no existe.")
+            return f"El archivo {args.path} no existe."
 
     except SystemExit: printError("Análisis de argumentos")
     except Exception as e: printError(str(e))
@@ -155,17 +135,15 @@ def fn_rmdisk(split_args):
 def fn_fdisk(split_args):
     try:
         parser = argparse.ArgumentParser(description="Parámetros")
-        parser.add_argument("-size", type=int, help="Tamaño de la particion")
+        parser.add_argument("-size", required=True, type=int, help="Tamaño de la particion")
         parser.add_argument("-path", required=True, help="Ruta del disco en donde se creara la particion")
         parser.add_argument("-name", required=True, help="Nombre de la particion")
         parser.add_argument("-unit", required=False, choices=["b","k", "m"], default="k", help="Unidad de tamaño (opcional)")
         parser.add_argument("-type", required=False, choices=["p", "e", "l"], default="p", help="Tipo de particion (opcional)")
         parser.add_argument("-fit", required=False, choices=["bf", "ff", "wf"], default="wf",help="Tipo de ajuste de disco (opcional)")
-        parser.add_argument("-add", type=int, required=False, help="Agregar espacio a la particion (opcional)")
-        parser.add_argument("-delete", required=False, choices=["full"], help="Eliminar particion (opcional)")
         args = parser.parse_args(split_args)
 
-        execute_fdisk(args)
+        return execute_fdisk(args)
 
     except SystemExit: printError("Análisis de argumentos")
     except Exception as e: printError(str(e))
@@ -178,18 +156,7 @@ def fn_mount(split_args):
         parser.add_argument("-name", required=True, help="Nombre de la particion a cargar")
         args = parser.parse_args(split_args)
 
-        execute_mount(args)
-
-    except SystemExit: printError("Análisis de argumentos")
-    except Exception as e: printError(str(e))
-
-def fn_unmount(split_args):
-    try:
-        parser = argparse.ArgumentParser(description="Parámetros")
-        parser.add_argument("-id", required=True, help="Id de la particion a desmontar")
-        args = parser.parse_args(split_args)
-
-        execute_unmount(args)
+        return execute_mount(args)
 
     except SystemExit: printError("Análisis de argumentos")
     except Exception as e: printError(str(e))
@@ -217,7 +184,7 @@ def fn_rep(split_args):
         parser.add_argument("-ruta", required=False, help="Nombre del archivo o carpeta del que se mostrara el reporte")
         args = parser.parse_args(split_args)
 
-        execute_rep(args)
+        return execute_rep(args)
 
     except SystemExit: printError("Análisis de argumentos")
     except Exception as e: printError(str(e))

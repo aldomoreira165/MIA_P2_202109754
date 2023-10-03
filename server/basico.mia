@@ -4,10 +4,6 @@
 #CAMBIAR /home/aldo -> POR SU USUARIO EJ ->  /home/SU_USER 
 #CAMBIAR LOS IDS
 
-#DISCO X
-mkdisk -param=x -size=30 -path=/home/aldo/archivos/Disco.dsk
-
-//funciona
 #CREACION DE DISCOS---------------------------------------------------
 # 50M
 Mkdisk -size=50 -unit=M -path=/home/aldo/archivos/Disco1.dsk -fit=FF  
@@ -16,7 +12,7 @@ Mkdisk -unit=k -size=51200 -path=/home/aldo/archivos/Disco2.dsk -fit=BF
 # 10M                
 mkDisk -size=10 -path=/home/aldo/archivos/Disco3.dsk   
 # 50M                               
-Mkdisk -unit=k -size=51200 -path=/home/aldo/archivos/Disco2.dsk -fit=BF 
+mkdisk -size=51200 -path="/home/aldo/archivos/mis archivos/Disco4.dsk" -unit=K  
 # 20M       
 mkDisk -size=20 -path="/home/aldo/archivos/mis archivos/Disco5.dsk" -unit=M -fit=WF  
 # 50M X  
@@ -95,19 +91,6 @@ fdisk -type=P -unit=m -name=Part27 -size=4 -path=/home/aldo/archivos/Disco3.dsk
 fdisk -type=P -unit=m -name=Part28 -size=1 -path=/home/aldo/archivos/Disco3.dsk     
 #LIBRE DISCO 3: 10-9= 1 -> 10%
 
-#ELIMINAR Y AGREGAR ESPACIO DISCO 3
-# ERR SIZE NEGATIVO
-fdisk -add=-1000 -unit=m -path=/home/aldo/archivos/Disco3.dsk -name=Part26 
-# ERR PARTICION NO TIENE ESPACIO
-fdisk -add=1000 -unit=m -path=/home/aldo/archivos/Disco3.dsk -name=Part26 
-# 4-2= 2M
-fdisk -add=-2 -unit=m -path=/home/aldo/archivos/Disco3.dsk -name=Part26 
-# 0
-fdisk -delete=full -name=Part27 -path=/home/aldo/archivos/Disco3.dsk 
-# 4+1= 5M
-fdisk -add=4 -unit=m -path=/home/aldo/archivos/Disco3.dsk -name=Part28 
-#LIBRE DISCO 3: 10-7= 3 -> 30%
-
 #DISCO 5
 # 5MB
 fdisk -type=E -unit=k -name=Part29 -size=5120 -path="/home/aldo/archivos/mis archivos/Disco5.dsk" -fit=BF 
@@ -154,20 +137,6 @@ mount -path=/home/aldo/archivos/Disco3.dsk -name=Part26
 #194a -> id6 -> 542disco5
 mount -path="/home/aldo/archivos/mis archivos/Disco5.dsk" -name=Part31 
 
-
-#DESMONTAR PARTICIONES---------------------------------------------------
-#ERR NO EXISTE ID
-unmount -id=IDx 
-#DISCO 1
-#-> id1
-unmount -id=541disco1
-#ERR PARTICION YA DESMONTADA -> id1
-unmount -id=541disco1
-#DISCO 2
-#-> id4
-unmount -id=541disco2 
-
-
 #REPORTES---------------------------------------------------
 #DISCO 1
 #ERR ID NO ENCONTRADO -> id1
@@ -201,4 +170,4 @@ rep -id=542disco5 -Path=/home/aldo/archivos/reports/reporte11.jpg -name=disk
 #-> id6
 rep -id=542disco5 -Path=/home/aldo/archivos/reports/reporte12.jpg -name=mbr 
 
-#exec -path=../basico.mia
+#execute -path=./basico.mia

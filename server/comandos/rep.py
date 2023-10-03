@@ -7,11 +7,11 @@ from elementos.superbloque import Superblock
 
 def execute_rep(args):
     if args.name == "mbr":
-        reporte_mbr(args.path, args.id)
+        return reporte_mbr(args.path, args.id)
     elif args.name == "disk":
-        reporte_disk(args.path, args.id)
+        return reporte_disk(args.path, args.id)
     elif args.name == "sb":
-        reporte_sb(args.path, args.id)
+        return reporte_sb(args.path, args.id)
 
 #sb
 def reporte_sb(ruta, id):
@@ -27,6 +27,7 @@ def reporte_sb(ruta, id):
 
         if elemento_encontrado == None:
             print("No se encontro la particion")
+            return "No se encontro la particion"
         else:
             mbrDisco = Mbr()
             obtenerDatosDisco(elemento_encontrado[2], 0, mbrDisco)
@@ -59,8 +60,10 @@ def reporte_sb(ruta, id):
             dot += "}"
 
             guardarImagen(ruta, dot)
+            return "Reporte generado correctamente"
     except Exception as e:
         print(f"Error: {e}")
+        return f"Error: {e}"
 
 #disk
 def reporte_disk(ruta, id):
@@ -76,6 +79,7 @@ def reporte_disk(ruta, id):
 
         if elemento_encontrado == None:
             print("No se encontro la particion")
+            return "No se encontro la particion"
         else:
             mbrDisco = Mbr()
             obtenerDatosDisco(elemento_encontrado[2], 0, mbrDisco)
@@ -91,8 +95,10 @@ def reporte_disk(ruta, id):
             dot += "}"
 
             guardarImagen(ruta, dot)
+            return "Reporte generado correctamente"
     except Exception as e:
         print(f"Error: {e}")
+        return f"Error: {e}"
             
 
 #mbr
@@ -109,6 +115,7 @@ def reporte_mbr(ruta, id):
 
         if elemento_encontrado == None:
             print("No se encontro la particion")
+            return "No se encontro la particion"
         else:
             inicioEBR = -1
             mbrDisco = Mbr()
@@ -143,9 +150,11 @@ def reporte_mbr(ruta, id):
             dot += "</TABLE>>];\n"
             dot += "}"
 
-            guardarImagen(ruta, dot)       
+            guardarImagen(ruta, dot)
+            return "Reporte generado correctamente"
     except Exception as e:
         print(f"Error: {e}")
+        return f"Error: {e}"
 
 #funciones auxiliares disk
 def labelDisk (rutaDisco, mbrDisco):

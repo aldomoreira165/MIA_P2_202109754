@@ -1,2 +1,26 @@
-Mkdisk -size=50 -unit=M -path=/home/aldo/archivos/Disco1.dsk -fit=FF 
+#ENTRADA PRIMER PARTE MIA
+#Seccion N - Sergie Arizandieta
+#2S 2023
+#CAMBIAR /home/aldo -> POR SU USUARIO EJ ->  /home/SU_USER 
+#CAMBIAR LOS IDS
+
+
+#CREACION DE DISCOS---------------------------------------------------
+# 50M
+Mkdisk -size=50 -unit=M -path=/home/aldo/archivos/Disco1.dsk -fit=FF  
+# 50M                
 Mkdisk -unit=k -size=51200 -path=/home/aldo/archivos/Disco2.dsk -fit=BF
+# 10M                
+mkDisk -size=10 -path=/home/aldo/archivos/Disco3.dsk   
+# 50M                               
+mkdisk -size=51200 -path="/home/aldo/archivos/mis archivos/Disco4.dsk" -unit=K  
+# 20M       
+mkDisk -size=20 -path="/home/aldo/archivos/mis archivos/Disco5.dsk" -unit=M -fit=WF  
+# 50M X  
+Mkdisk -size=50 -unit=M -path=/home/aldo/archivos/Disco6.dsk -fit=FF   
+# 50M X                
+Mkdisk -size=50 -unit=M -path=/home/aldo/archivos/Disco7.dsk -fit=FF                   
+# 50M X
+mkdisk -size=51200 -path="/home/aldo/archivos/mis archivos/Disco8.dsk" -unit=K        
+# 50M X
+mkdisk -size=51200 -path="/home/aldo/archivos/mis archivos/Disco9.dsk" -unit=K 
