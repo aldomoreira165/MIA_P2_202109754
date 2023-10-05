@@ -31,3 +31,27 @@
 #login-btn a{
     text-decoration: none;
 }
+
+#area-reportes h1{
+    text-align: center;
+    color: gray;
+}
+
+#reportes-text-area{
+    width: 98%;
+    height: 500px;
+}
+
+#contenedor-reportes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#lista-reportes{
+    width: 40%;;
+    border: 2px solid gray;
+    border-radius: 10px;
+}
+

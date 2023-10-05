@@ -1,3 +1,5 @@
+#execute -path=./archivo.mia
+#login -user=root -pass=123 -id=541disco1
 #ENTRADA SEGUNDA PARTE MIA
 #Seccion N - Sergie Arizandieta
 #2S 2023
@@ -23,4 +25,6 @@ mkfs -type=full -id=541disco1
 
 #EXT2------------------------------------------------
 #------------------------REPORTES 1----------------
-rep -id=541disco1 -path="/home/aldo/archivos/reportes/reporte1_sb.jpg" -name=sb
+rep -id=541disco1 -path="./reportes/reporte1_sb.jpg" -name=sb
+rep -id=541disco1 -Path=./reportes/reporte1.jpg -name=mbr 
+rep -id=542disco1 -Path=./reportes/reporte2.jpg -name=disk 

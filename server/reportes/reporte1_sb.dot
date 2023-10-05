@@ -1,0 +1,25 @@
+digraph sb{
+node [shape=plaintext]
+table [label=<
+<table border="1" cellborder="1" cellspacing="0">
+<tr><td colspan="3" bgcolor="yellow">Reporte de Superbloque</td></tr>
+<tr><td bgcolor="lightgray">s_filesystem_type</td><td bgcolor="lightgray">2</td></tr>
+<tr><td bgcolor="lightgray">s_inodes_count</td><td bgcolor="lightgray">24272</td></tr>
+<tr><td bgcolor="lightgray">s_blocks_count</td><td bgcolor="lightgray">72816</td></tr>
+<tr><td bgcolor="lightgray">s_free_blocks_count</td><td bgcolor="lightgray">72814</td></tr>
+<tr><td bgcolor="lightgray">s_free_inodes_count</td><td bgcolor="lightgray">24270</td></tr>
+<tr><td bgcolor="lightgray">s_mtime</td><td bgcolor="lightgray">b'04/10/2023 22:02'</td></tr>
+<tr><td bgcolor="lightgray">s_umtime</td><td bgcolor="lightgray">b'04/10/2023 22:02'</td></tr>
+<tr><td bgcolor="lightgray">s_mnt_count</td><td bgcolor="lightgray">1</td></tr>
+<tr><td bgcolor="lightgray">s_magic</td><td bgcolor="lightgray">61267</td></tr>
+<tr><td bgcolor="lightgray">s_inode_size</td><td bgcolor="lightgray">128</td></tr>
+<tr><td bgcolor="lightgray">s_block_size</td><td bgcolor="lightgray">64</td></tr>
+<tr><td bgcolor="lightgray">s_first_ino</td><td bgcolor="lightgray">0</td></tr>
+<tr><td bgcolor="lightgray">s_first_blo</td><td bgcolor="lightgray">0</td></tr>
+<tr><td bgcolor="lightgray">s_bm_inode_start</td><td bgcolor="lightgray">237</td></tr>
+<tr><td bgcolor="lightgray">s_bm_block_start</td><td bgcolor="lightgray">24509</td></tr>
+<tr><td bgcolor="lightgray">s_inode_start</td><td bgcolor="lightgray">97325</td></tr>
+<tr><td bgcolor="lightgray">s_block_start</td><td bgcolor="lightgray">3204141</td></tr>
+</table>
+>];
+}

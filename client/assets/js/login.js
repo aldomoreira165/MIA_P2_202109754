@@ -21,6 +21,11 @@ btnLogin.addEventListener('click', function () {
                     title: 'Login exitoso',
                     text: 'Creedenciales correctas',
                 })
+                //esperar 2 segundos
+                setTimeout(function () {
+                    //redireccionar
+                    window.location.href = "./log.html"
+                }, 2000);
             }else {
                 Swal.fire({
                     icon: 'error',
