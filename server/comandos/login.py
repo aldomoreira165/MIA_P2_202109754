@@ -45,6 +45,7 @@ def execute_login(args):
             print("=============")
             print("Sesion iniciada:", userSesion)
             Crrfile.close()
+            return "Sesion iniciada: " + str(userSesion)
 
 def initSearch(path,Crrfile,TempSuperblock):
     print("path",path)
@@ -109,6 +110,14 @@ def getInodeFileData(Inode,Crrfile,TempSuperblock):
 def execute_logout():
     if len(userSesion) == 0:
         print("No existe una sesion iniciada")
+        return "No existe una sesion iniciada"
     else:
         userSesion.clear()
         print("Sesion cerrada")
+        return "Sesion cerrada"
+    
+def verificar_credenciales(username, password):
+    for user in userSesion:
+        if user[2] == username and user[4] == password:
+            return True
+    return False

@@ -9,3 +9,4 @@ def execute_rmdisk(args):
         return eliminarDisco(args.path)
     else:
         print("Eliminacion de disco cancelada") 
+        return "Eliminacion de disco cancelada"

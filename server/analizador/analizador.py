@@ -21,44 +21,53 @@ def AnalyzeType(entry):
             command = split_args.pop(0)
             if (command == "execute"):
                 print(" ------ Se detecto execute ------ ")
-                return fn_execute(split_args)
+                salida = fn_execute(split_args)
                 print(" ------ Termino execute ------ ")
+                return salida
             elif(command == "mkdisk"):
                 print(" ------ Se detecto mkdisk ------ ")
-                return fn_mkdisk(split_args)
+                salida = fn_mkdisk(split_args)
                 print(" ------ Termino mkdisk ------ ")
+                return salida
             elif(command == "rmdisk"):
                 print(" ------ Se detecto rmdisk ------ ")
-                return fn_rmdisk(split_args)
+                salida = fn_rmdisk(split_args)
                 print(" ------ Termino rmdisk ------ ")
+                return salida
             elif(command == "fdisk"):
                 print(" ------ Se detecto fdisk ------ ")
-                return fn_fdisk(split_args)
+                salida = fn_fdisk(split_args)
                 print(" ------ Termino fdisk ------ ")
+                return salida
             elif(command == "mount"):
                 print(" ------ Se detecto mount ------ ")
-                return fn_mount(split_args)
+                salida = fn_mount(split_args)
                 print(" ------ Termino mount ------ ")
+                return salida
             elif (command == "mkfs"):
                 print(" ------ Se detecto mkfs ------ ")
-                return fn_mkfs(split_args)
+                salida = fn_mkfs(split_args)
                 print(" ------ Termino mkfs ------ ")
+                return salida
             elif (command == "login"):
                 print(" ------ Se detecto login ------ ")
-                return fn_login(split_args)
+                salida = fn_login(split_args)
                 print(" ------ Termino login ------ ")
+                return salida
             elif (command == "logout"):
                 print(" ------ Se detecto logout ------ ")
-                return fn_logout()
+                salida =  fn_logout()
                 print(" ------ Termino logout ------ ")
+                return salida
             elif (command == "pause"):
                 print(" ------ Se detecto pause ------ ")
                 input("Presione enter para continuar...")
                 print(" ------ Termino pause ------ ")
             elif (command == "rep"):
                 print(" ------ Se detecto rep ------ ")
-                return fn_rep(split_args)
+                salida = fn_rep(split_args)
                 print(" ------ Termino rep ------ ")
+                return salida
             else:
                 printError("Comando no reconocido")
                 return "[Error] Comando no reconocido"
@@ -66,10 +75,9 @@ def AnalyzeType(entry):
 
 def fn_logout():
     try:
-        execute_logout()
+        return execute_logout()
 
-    except SystemExit: printError("Análisis de argumentos")
-    except Exception as e: printError(str(e))
+    except Exception as e: return "[Error] Análisis de argumentos \n " + str(e)
 
 def fn_login(split_args):
     try:
@@ -81,8 +89,7 @@ def fn_login(split_args):
 
         return execute_login(args)
 
-    except SystemExit: printError("Análisis de argumentos")
-    except Exception as e: printError(str(e))
+    except Exception as e: return "[Error] Análisis de argumentos \n " + str(e)
 
 def fn_execute(split_args):
     try:
@@ -103,8 +110,7 @@ def fn_execute(split_args):
             print(f"El archivo {args.path} no existe.")
             return f"El archivo {args.path} no existe."
 
-    except SystemExit: printError("Análisis de argumentos")
-    except Exception as e: printError(str(e))
+    except Exception as e: return "[Error] Análisis de argumentos \n " + str(e)
 
 def fn_mkdisk(split_args):
     try:
@@ -117,8 +123,8 @@ def fn_mkdisk(split_args):
 
         return execute_mkdisk(args)
 
-    except SystemExit: printError("Análisis de argumentos")
-    except Exception as e: printError(str(e))
+    except:
+        return "[Error] Análisis de argumentos \n"
 
 def fn_rmdisk(split_args):
     try:
@@ -129,8 +135,7 @@ def fn_rmdisk(split_args):
 
         return execute_rmdisk(args)
 
-    except SystemExit: printError("Análisis de argumentos")
-    except Exception as e: printError(str(e))
+    except Exception as e: return "[Error] Análisis de argumentos \n " + str(e)
 
 def fn_fdisk(split_args):
     try:
@@ -145,8 +150,7 @@ def fn_fdisk(split_args):
 
         return execute_fdisk(args)
 
-    except SystemExit: printError("Análisis de argumentos")
-    except Exception as e: printError(str(e))
+    except Exception as e: return "[Error] Análisis de argumentos \n " + str(e)
 
 
 def fn_mount(split_args):
@@ -158,8 +162,7 @@ def fn_mount(split_args):
 
         return execute_mount(args)
 
-    except SystemExit: printError("Análisis de argumentos")
-    except Exception as e: printError(str(e))
+    except Exception as e: return "[Error] Análisis de argumentos \n " + str(e)
 
 
 def fn_mkfs(split_args):
@@ -167,13 +170,11 @@ def fn_mkfs(split_args):
         parser = argparse.ArgumentParser(description="Parámetros")
         parser.add_argument("-id", required=True, help="Id de la particion a formatear")
         parser.add_argument("-type", required=False, choices=["full"], default="full", help="Tipo de formateo")
-        parser.add_argument("-fs", required=False, choices=["2fs", "3fs"], default="2fs", help="Tipo de sistema de archivos")
         args = parser.parse_args(split_args)
 
-        execute_mkfs(args)
+        return execute_mkfs(args)
 
-    except SystemExit: printError("Análisis de argumentos")
-    except Exception as e: printError(str(e))
+    except Exception as e: return "[Error] Análisis de argumentos \n " + str(e)
 
 def fn_rep(split_args):
     try:
@@ -186,5 +187,4 @@ def fn_rep(split_args):
 
         return execute_rep(args)
 
-    except SystemExit: printError("Análisis de argumentos")
-    except Exception as e: printError(str(e))
+    except Exception as e: return "[Error] Análisis de argumentos \n " + str(e)

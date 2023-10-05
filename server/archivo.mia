@@ -1,26 +1,26 @@
-#ENTRADA PRIMER PARTE MIA
+#ENTRADA SEGUNDA PARTE MIA
 #Seccion N - Sergie Arizandieta
 #2S 2023
-#CAMBIAR /home/aldo -> POR SU USUARIO EJ ->  /home/SU_USER 
+#CAMBIAR /home/serchiboi -> POR SU USUARIO EJ ->  /home/SU_USER 
 #CAMBIAR LOS IDS
 
+#CREACION DE DISCOS------------------------------------------------
+Mkdisk -size=20 -unit=m -path=/home/aldo/archivos/Discos/Disco1.dsk
+Mkdisk -size=20 -unit=m -path=/home/aldo/archivos/Discos/Disco2.dsk
 
-#CREACION DE DISCOS---------------------------------------------------
-# 50M
-Mkdisk -size=50 -unit=M -path=/home/aldo/archivos/Disco1.dsk -fit=FF  
-# 50M                
-Mkdisk -unit=k -size=51200 -path=/home/aldo/archivos/Disco2.dsk -fit=BF
-# 10M                
-mkDisk -size=10 -path=/home/aldo/archivos/Disco3.dsk   
-# 50M                               
-mkdisk -size=51200 -path="/home/aldo/archivos/mis archivos/Disco4.dsk" -unit=K  
-# 20M       
-mkDisk -size=20 -path="/home/aldo/archivos/mis archivos/Disco5.dsk" -unit=M -fit=WF  
-# 50M X  
-Mkdisk -size=50 -unit=M -path=/home/aldo/archivos/Disco6.dsk -fit=FF   
-# 50M X                
-Mkdisk -size=50 -unit=M -path=/home/aldo/archivos/Disco7.dsk -fit=FF                   
-# 50M X
-mkdisk -size=51200 -path="/home/aldo/archivos/mis archivos/Disco8.dsk" -unit=K        
-# 50M X
-mkdisk -size=51200 -path="/home/aldo/archivos/mis archivos/Disco9.dsk" -unit=K 
+#CREACION DE PARTICION------------------------------------------------
+fdisk -type=P -unit=K -name=Part1 -size=7680 -path=/home/aldo/archivos/Discos/Disco1.dsk -fit=BF
+fdisk -type=P -unit=K -name=Part1 -size=7680 -path=/home/aldo/archivos/Discos/Disco2.dsk -fit=BF
+
+#MOUNT------------------------------------------------
+#191a -> id1 -> 541disco1
+mount -path=/home/aldo/archivos/Discos/Disco1.dsk -name=Part1 
+#192a -> id2 -> 541disco2
+mount -path=/home/aldo/archivos/Discos/Disco2.dsk -name=Part1 
+
+#CREACION DE SISTEMA DE ARCHIVOS------------------------------------------------
+mkfs -type=full -id=541disco1
+
+#EXT2------------------------------------------------
+#------------------------REPORTES 1----------------
+rep -id=541disco1 -path="/home/aldo/archivos/reportes/reporte1_sb.jpg" -name=sb

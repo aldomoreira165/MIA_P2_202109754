@@ -33,7 +33,6 @@ executeButton.addEventListener("click", function () {
         url: urlApi,
         method: "GET",
         success: function (response) {
-            console.log(response);
             outArea.value = response;
         },
         error: function (error) {

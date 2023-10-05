@@ -35,4 +35,5 @@ def execute_mkdisk(args):
             return f"Error configurando disco: {e}"
     else:
         print("Error: El tamaño del disco debe ser positivo y mayor que 0.")
+        return "Error: El tamaño del disco debe ser positivo y mayor que 0."
 

@@ -21,7 +21,7 @@ def execute_mkfs(args):
     else:
         numerador = particion_montada[1].s - struct.calcsize(Superblock().getConst())
         denominador = 4 + struct.calcsize(Inode().getConst()) + 3 * struct.calcsize(Fileblock().getConst())
-        temp = 0 if args.fs == "2fs" else 0
+        temp = 0
         n = math.floor(numerador / denominador)
 
         #creando superbloque
@@ -37,10 +37,7 @@ def execute_mkfs(args):
         new_superblock.inode_size = struct.calcsize(Inode().getConst())
         new_superblock.block_size = struct.calcsize(Fileblock().getConst())
 
-        if args.fs == "2fs":
-            create_ext2(n, particion_montada, new_superblock, date)
-        elif args.fs == 3:
-            pass
+        return create_ext2(n, particion_montada, new_superblock, date)
 
 
 def create_ext2(n, mPartition, new_superblock, date):
@@ -138,4 +135,5 @@ def create_ext2(n, mPartition, new_superblock, date):
     generarDatosDisco(Crr_file, new_superblock.block_start+1*struct.calcsize(Fileblock().getConst()), Fileblock1)
 
     Crr_file.close()
-    print("Sistema de archivos creado exitosamente")
+    print("Sistema de archivos EXT2 creado exitosamente")
+    return "Sistema de archivos EXT2 creado exitosamente"
