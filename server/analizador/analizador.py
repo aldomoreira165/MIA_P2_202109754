@@ -12,66 +12,58 @@ from comandos.rmdisk import *
 from comandos.rep import execute_rep
    
 def AnalyzeType(entry): 
-    try:
-        printConsole("Analizando comando: " + entry.lower())
-        if re.search(r"^\s*#.*$", entry) or re.search(r"^\s*$", entry):
-            return ""
-        else:
-            split_args = shlex.split(entry.lower())
-            command = split_args.pop(0)
-            if (command == "execute"):
-                print(" ------ Se detecto execute ------ ")
-                salida = fn_execute(split_args)
-                print(" ------ Termino execute ------ ")
-                return salida
-            elif(command == "mkdisk"):
-                print(" ------ Se detecto mkdisk ------ ")
-                salida = fn_mkdisk(split_args)
-                print(" ------ Termino mkdisk ------ ")
-                return salida
-            elif(command == "rmdisk"):
-                print(" ------ Se detecto rmdisk ------ ")
-                salida = fn_rmdisk(split_args)
-                print(" ------ Termino rmdisk ------ ")
-                return salida
-            elif(command == "fdisk"):
-                print(" ------ Se detecto fdisk ------ ")
-                salida = fn_fdisk(split_args)
-                print(" ------ Termino fdisk ------ ")
-                return salida
-            elif(command == "mount"):
-                print(" ------ Se detecto mount ------ ")
-                salida = fn_mount(split_args)
-                print(" ------ Termino mount ------ ")
-                return salida
-            elif (command == "mkfs"):
-                print(" ------ Se detecto mkfs ------ ")
-                salida = fn_mkfs(split_args)
-                print(" ------ Termino mkfs ------ ")
-                return salida
-            elif (command == "login"):
-                print(" ------ Se detecto login ------ ")
-                salida = fn_login(split_args)
-                print(" ------ Termino login ------ ")
-                return salida
-            elif (command == "logout"):
-                print(" ------ Se detecto logout ------ ")
-                salida =  fn_logout()
-                print(" ------ Termino logout ------ ")
-                return salida
-            elif (command == "pause"):
-                print(" ------ Se detecto pause ------ ")
-                input("Presione enter para continuar...")
-                print(" ------ Termino pause ------ ")
-            elif (command == "rep"):
-                print(" ------ Se detecto rep ------ ")
-                salida = fn_rep(split_args)
-                print(" ------ Termino rep ------ ")
-                return salida
+    salida = ""
+    lineas = entry.splitlines()
+    for linea in lineas:
+        try:
+            printConsole("Analizando comando: " + linea.lower())
+            if re.search(r"^\s*#.*$", linea) or re.search(r"^\s*$", linea):
+                pass
             else:
-                printError("Comando no reconocido")
-                return "[Error] Comando no reconocido"
-    except Exception as e: pass
+                split_args = shlex.split(linea.lower())
+                command = split_args.pop(0)
+                if(command == "mkdisk"):
+                    print(" ------ Se detecto mkdisk ------ ")
+                    salida += fn_mkdisk(split_args) + "\n"
+                    print(" ------ Termino mkdisk ------ ")
+                elif(command == "rmdisk"):
+                    print(" ------ Se detecto rmdisk ------ ")
+                    salida += fn_rmdisk(split_args) + "\n"
+                    print(" ------ Termino rmdisk ------ ")
+                elif(command == "fdisk"):
+                    print(" ------ Se detecto fdisk ------ ")
+                    salida += fn_fdisk(split_args) + "\n"
+                    print(" ------ Termino fdisk ------ ")
+                elif(command == "mount"):
+                    print(" ------ Se detecto mount ------ ")
+                    salida += fn_mount(split_args) + "\n"
+                    print(" ------ Termino mount ------ ")
+                elif (command == "mkfs"):
+                    print(" ------ Se detecto mkfs ------ ")
+                    salida += fn_mkfs(split_args) + "\n"
+                    print(" ------ Termino mkfs ------ ")
+                elif (command == "login"):
+                    print(" ------ Se detecto login ------ ")
+                    salida += fn_login(split_args) + "\n"
+                    print(" ------ Termino login ------ ")
+                elif (command == "logout"):
+                    print(" ------ Se detecto logout ------ ")
+                    salida +=  fn_logout() + "\n"
+                    print(" ------ Termino logout ------ ")
+                elif (command == "pause"):
+                    print(" ------ Se detecto pause ------ ")
+                    salida += "Pause detectado" + "\n"
+                    print(" ------ Termino pause ------ ")
+                elif (command == "rep"):
+                    print(" ------ Se detecto rep ------ ")
+                    salida += fn_rep(split_args) + "\n"
+                    print(" ------ Termino rep ------ ")
+                else:
+                    printError("Comando no reconocido")
+                    salida += "[Error] Comando no reconocido" + "\n"
+        except Exception as e: pass
+
+    return salida
 
 def fn_logout():
     try:
@@ -90,8 +82,6 @@ def fn_login(split_args):
         return execute_login(args)
 
     except Exception as e: return "[Error] Análisis de argumentos \n " + str(e)
-
-def fn_execute(split_args):
     try:
         parser = argparse.ArgumentParser(description="Parámetros")
         parser.add_argument("-path", required=True, help="Ruta del archivo a ejecutar")

@@ -26,6 +26,7 @@ inputFile.addEventListener("change", function () {
 });
 
 executeButton.addEventListener("click", function () {
+    outArea.value = "Analizando..."
     var comando = entryArea.value;
     var urlApi = "http://127.0.0.1:5000/execute" + "?comando=" + encodeURIComponent(comando);
 

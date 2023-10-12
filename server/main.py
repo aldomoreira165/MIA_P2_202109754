@@ -14,7 +14,6 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 @app.route('/execute', methods=['GET'])
 def execute():
     comando = request.args.get('comando')
-    comando = re.sub(r"[#][^\n]*", "", comando)
     response = AnalyzeType(comando)
     return jsonify(response)
 
