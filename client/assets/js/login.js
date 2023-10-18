@@ -6,7 +6,7 @@ btnLogin.addEventListener('click', function () {
     var username = inputUser.value;
     var password = inputPassword.value;
 
-    var urlApi =    "http://127.0.0.1:5000/login" + 
+    var urlApi =    "http://18.215.167.146:3000/login" + 
                     "?username=" + encodeURIComponent(username) + 
                     "&password=" + encodeURIComponent(password);
 
