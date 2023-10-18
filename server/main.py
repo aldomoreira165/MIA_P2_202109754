@@ -8,7 +8,7 @@ from comandos.login import verificar_credenciales
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 
 @app.route('/execute', methods=['GET'])
