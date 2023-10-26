@@ -12,6 +12,8 @@ def execute_rep(args):
         return reporte_disk(args.path, args.id)
     elif args.name == "sb":
         return reporte_sb(args.path, args.id)
+    else:
+        return "Error: no existe el reporte" 
 
 #sb
 def reporte_sb(ruta, id):

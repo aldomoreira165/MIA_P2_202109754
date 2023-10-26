@@ -1,7 +1,7 @@
 //ejecutar al cargar la pagina
 window.onload = function () {
     $.ajax({
-        url: "http://18.215.167.146:3000/getReportes",
+        url: "http://18.232.136.154:3000/getReportes",
         method: "GET",
         success: function (response) {
             const imagenes = response.imagenes;

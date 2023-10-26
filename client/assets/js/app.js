@@ -28,7 +28,7 @@ inputFile.addEventListener("change", function () {
 executeButton.addEventListener("click", function () {
     outArea.value = "Analizando..."
     var comando = entryArea.value;
-    var urlApi = "http://18.215.167.146:3000/execute" + "?comando=" + encodeURIComponent(comando);
+    var urlApi = "http://18.232.136.154:3000/execute" + "?comando=" + encodeURIComponent(comando);
 
     $.ajax({
         url: urlApi,

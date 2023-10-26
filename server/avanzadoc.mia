@@ -1,0 +1,71 @@
+#ENTRADA SEGUNDA PARTE MIA P2
+#Seccion N - Sergie Arizandieta
+#2S 2023
+#CAMBIAR /home/ubuntu -> POR SU USUARIO EJ ->  /home/SU_USER 
+#CUANDO ESTE EN LA NUBE SI LA CREAN CON UBUNTU COMO SE MOSTRO EN EL LAB: CAMBIAR /home/ubuntu -> /home/Ubuntu 
+#CAMBIAR LOS IDS
+
+#CREACION DE DISCOS------------------------------------------------
+Mkdisk -size=20 -unit=m -path=/home/ubuntu/archivos/Discos/Disco1.dsk
+Mkdisk -size=20 -unit=m -path=/home/ubuntu/archivos/Discos/Disco2.dsk
+
+#CREACION DE PARTICION------------------------------------------------
+fdisk -type=P -unit=K -name=Part1 -size=7680 -path=/home/ubuntu/archivos/Discos/Disco1.dsk -fit=BF
+fdisk -type=P -unit=K -name=Part1 -size=7680 -path=/home/ubuntu/archivos/Discos/Disco2.dsk -fit=BF
+
+#MOUNT------------------------------------------------
+#191a -> id1 -> cambiar el 191a por el ID que a ustedes les genera
+mount -path=/home/ubuntu/archivos/Discos/Disco1.dsk -name=Part1
+#192a -> id2 -> cambiar el 192a por el ID que a ustedes les genera
+mount -path=/home/ubuntu/archivos/Discos/Disco2.dsk -name=Part1
+
+#CREACION DE SISTEMA DE ARCHIVOS------------------------------------------------
+#-fs=2fs
+mkfs -type=full -id=541disco1
+#-fs=2fs
+mkfs -type=full -id=541disco2
+
+#EXT2------------------------------------------------
+#------------------------REPORTES 1----------------
+rep -id=541disco1 -path="./reportes/reporte1_sb.jpg" -name=sb
+
+pause
+#ERR
+mkdisk -param=x 
+
+#LOGIN------------------------------------------------
+login -user=root -pass=123 -id=541disco1
+
+#ERR SESION INICIADA
+login -user=root -pass=123 -id=541disco1
+
+pause
+mkdisk -param=x #ERR
+
+
+#------------------------REPORTES 5----------------
+#ERR NO EXISTE ESTE REPORTE
+rep -id=541disco1 -path="./reportes/reporte5_inode.jpg" -name=inode
+#ERR NO EXISTE ESTE REPORTE
+rep -id=541disco1 -path="./reportes/reporte5_block.pdf" -name=block 
+rep -id=541disco1 -path="./reportes/reporte5_sb.jpg" -name=sb
+
+
+pause
+#ERR
+mkdisk -param=x 
+
+logout
+
+login -user=root -pass=123 -id=541disco1
+
+
+logout
+
+LOGIN -user=usuario1 -pass=password -id=541disco1
+
+#------------------------REPORTES 6----------------
+rep -id=541disco1 -path="./reportes/reporte6_sb.jpg" -name=sb
+
+pause
+mkdisk -param=x #ERR
