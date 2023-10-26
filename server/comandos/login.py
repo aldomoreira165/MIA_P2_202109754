@@ -120,6 +120,8 @@ def verificar_credenciales(username, password):
     for user in userSesion:
         if user[2] == username and user[4] == password:
             return True
-        elif user[2] == "root" and user[4] == "root":
-            return True
+    
+    if username == 'root' and password == 'root':
+        return True
+
     return False
