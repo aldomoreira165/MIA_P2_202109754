@@ -27,7 +27,7 @@ mkfs -type=full -id=541disco2
 
 #EXT2------------------------------------------------
 #------------------------REPORTES 1----------------
-rep -id=541disco1 -path="./reportes/reporte1_sb.jpg" -name=sb
+rep -id=541disco1 -path="./reportes/reporte1_sb_avanzado.jpg" -name=sb
 
 pause
 #ERR
@@ -45,10 +45,10 @@ mkdisk -param=x #ERR
 
 #------------------------REPORTES 5----------------
 #ERR NO EXISTE ESTE REPORTE
-rep -id=541disco1 -path="./reportes/reporte5_inode.jpg" -name=inode
+rep -id=541disco1 -path="./reportes/reporte5_inode_avanzado.jpg" -name=inode
 #ERR NO EXISTE ESTE REPORTE
-rep -id=541disco1 -path="./reportes/reporte5_block.pdf" -name=block 
-rep -id=541disco1 -path="./reportes/reporte5_sb.jpg" -name=sb
+rep -id=541disco1 -path="./reportes/reporte5_block_avanzado.pdf" -name=block 
+rep -id=541disco1 -path="./reportes/reporte5_sb_avanzado.jpg" -name=sb
 
 
 pause
@@ -65,7 +65,7 @@ logout
 LOGIN -user=usuario1 -pass=password -id=541disco1
 
 #------------------------REPORTES 6----------------
-rep -id=541disco1 -path="./reportes/reporte6_sb.jpg" -name=sb
+rep -id=541disco1 -path="./reportes/reporte6_sb_avanzado.jpg" -name=sb
 
 pause
 mkdisk -param=x #ERR
